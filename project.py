@@ -36,7 +36,7 @@ else:
     for meal in meals:  # If the ingredient is found, then
         pprint(meal['strMeal'])  # Print out the name of the meal
         # pprint(meal['idMeal'])  #Print out the id of the meal
-        idmeal = meal['idMeal']  # Create a new variable called idmeal to get the meal id
+        idmeal = meal['idMeal']  # Create a new variable called idmeal to get the meal  id
         mealdetail = search_meal()[
             0]  # Get the full meal details from the meal id for the first item and store in new variable called mealdetail
         # pprint(mealdetail) #Print out the full meal details for each meal containing the ingredient selected by user
