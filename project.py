@@ -29,16 +29,29 @@ def search_meal():  # Create a function that makes a request to the Themealdb AP
 
 
 meals = search_ingredient()  # Store the search result in a new variable called meals
-if meals is None:  # Check if we received any data at all. if not, then
-    print('No meals found with ingredient {}. Please choose another one.'.format(
-        ingredient_name))  # Print out a message to the user and ask to pick another ingredient
-else:
-    for meal in meals:  # If the ingredient is found, then
-        pprint(meal['strMeal'])  # Print out the name of the meal
-        # pprint(meal['idMeal'])  #Print out the id of the meal
-        idmeal = meal['idMeal']  # Create a new variable called idmeal to get the meal  id
-        mealdetail = search_meal()[
-            0]  # Get the full meal details from the meal id for the first item and store in new variable called mealdetail
-        # pprint(mealdetail) #Print out the full meal details for each meal containing the ingredient selected by user
+recipe = [] #Create a list called recipe
 
-        print(mealdetail['strInstructions'])  # Print the instructions
+if meals is None: #Check if we received any data at all. if not, then
+    print('No meals found with ingredient {}. Please choose another one.'.format(ingredient_name)) #Print out a message to the user and ask to pick another ingredient
+else:
+    for meal in meals: #If the ingredient is found, then
+        mealname = meal['strMeal'] #Create new variable called mealname
+        pprint(mealname) #Print out the name of the meal
+        recipe.append(mealname) #Add the mealname to the recipe list
+        #pprint(meal['idMeal'])  #Print out the id of the meal
+        idmeal = meal['idMeal']  #Create a new variable called idmeal to get the meal id
+        mealdetail = search_meal()[0] #Get the full meal details from the meal id for the first item and store in new variable called mealdetail
+        #pprint(mealdetail) #Print out the full meal details for each meal containing the ingredient selected by user
+
+        instruction = mealdetail['strInstructions'] #Create new variable called instruction
+        print(instruction) #Print the instructions
+        recipe.append(instruction) #Add the instruction to the recipe list
+
+download_choice = input('Would you like to save the result into a txt file? y/n')
+
+if download_choice.strip() == 'y':
+    with open('themealdb.txt', 'w+', encoding='utf-8') as text_file: #open the themealdb.txt file in read and write mode as text file
+        for line in recipe:
+            text_file.write(f'{line}\n') #take this text file and write the content of our variable inside
+else:
+    print('You chose not to download and save the receipt.')
