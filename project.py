@@ -50,6 +50,16 @@ def search_ingredient():
             recipe.append(meal_name)
             idmeal = meal['idMeal']
             mealdetail = get_meal_details(idmeal)
+
+            for key, value in mealdetail.items():  # For all the key value pairs in a meal
+                if key.startswith("strIngredient") and value:  # Find those where the key starts with strIngredient and
+                    index = key[
+                            len("strIngredient"):]  # Extract the number from the key (e.g. strIngredient1 2 3 4 5...)
+                    ingredient_and_measure = 'Ingredient {}: {}, Measure: {}'.format(index, value, mealdetail[
+                        'strMeasure' + str(index)])
+                    print(ingredient_and_measure)  # Print ingredient + measure as result
+                    recipe.append(ingredient_and_measure)  # Add the ingredient + measure to the recipe list
+
             instruction = mealdetail.get('strInstructions', 'No instructions available.')
             print("\nInstructions:")
             print(instruction)
