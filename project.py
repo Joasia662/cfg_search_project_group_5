@@ -1,8 +1,10 @@
 import requests  # Import requests library
 from pprint import pprint  # Import pretty print
 
-meal_db_api_base_url = 'https://www.themealdb.com/api/json/v1/1/'  # Store themealdb base URL in a new variable
+# Store themealdb base URL in a new variable
+meal_db_api_base_url = 'https://www.themealdb.com/api/json/v1/1/'  
 
+# Welcome message
 user_name = input('Hi! Welcome to the Meal Planner. Please, tell us your name :) ')
 print('Nice to meet you, {}! '.format(user_name))
 
@@ -21,6 +23,14 @@ def search_meal_by_name():
         print(meal['strInstructions'])
 
 
+def get_meal_details(meal_id):
+    meal_lookup_path = f"lookup.php?i={meal_id}"
+    search_url = f"{meal_db_api_base_url}{meal_lookup_path}"
+    response = requests.get(search_url)
+    data = response.json()
+    return data['meals'][0] if data['meals'] else {}
+
+
 def search_ingredient():
     ingredient_name = input("What is the ingredient you would like to search for? ").strip()
     ingredient_filter_path = 'filter.php?i='
@@ -34,9 +44,10 @@ def search_ingredient():
         meals = data['meals']
         recipe = []
         for meal in meals:
-            pprint(meal['strMeal'])
+            meal_name = meal['strMeal']
+            pprint(meal_name)
             print(f"Meal ID: {meal['idMeal']}")
-            recipe.append(meal['strMeal'])
+            recipe.append(meal_name)
             idmeal = meal['idMeal']
             mealdetail = get_meal_details(idmeal)
             instruction = mealdetail.get('strInstructions', 'No instructions available.')
@@ -52,14 +63,6 @@ def search_ingredient():
             print("Results saved to 'themealdb.txt'.")
         else:
             print('You chose not to download and save the recipes.')
-
-
-def get_meal_details(meal_id):
-    meal_lookup_path = f"lookup.php?i={meal_id}"
-    search_url = f"{meal_db_api_base_url}{meal_lookup_path}"
-    response = requests.get(search_url)
-    data = response.json()
-    return data['meals'][0] if data['meals'] else {}
 
 
 def random_meal():
@@ -95,3 +98,4 @@ def menu():
 
 
 menu()
+
