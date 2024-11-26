@@ -57,7 +57,6 @@ def filter_by_ingredient(my_local_meal_list, my_local_ingredient):
 def display_meals(local_list_of_meals_with_their_ingredients):
     local_recipe = []
     for meal in local_list_of_meals_with_their_ingredients:
-
         meal_detail = get_meal_details(meal["meal_id"])
         local_recipe.append(meal_detail["strMeal"])
 
@@ -72,10 +71,20 @@ def display_meals(local_list_of_meals_with_their_ingredients):
 
         instruction = meal_detail.get('strInstructions', 'No instructions available.')
         print("\nInstructions:")
-        print(instruction)
+        print(instruction, "\n\n")
         local_recipe.append(instruction)
 
     return local_recipe
+
+def download_file(local_recipe):
+    download_choice = input('Would you like to save the results into a txt file? (y/n): ')
+    if download_choice.strip().lower() == 'y':
+        with open('themealdb.txt', 'w+', encoding='utf-8') as text_file:
+            for line in local_recipe:
+                text_file.write(f'{line}\n')
+        print("Results saved to 'themealdb.txt'.")
+    else:
+        print('You chose not to download and save the recipes.')
 
 def search_ingredient():
     index = 0
@@ -94,37 +103,30 @@ def search_ingredient():
         meals = data['meals']
         recipe = []
         for meal in meals:
-
             id_meal = meal['idMeal']
             meal_detail = get_meal_details(id_meal)
             list_of_meals_with_their_ingredients.append(separate_ingredients_and_id_from_meal(meal_detail))
 
         index += 1
         while True:
-
-            user_input = input("You have found " + str(
-                len(list_of_meals_with_their_ingredients)) + " meals. Would you like to narrow your search? (y/n)")
-            if user_input.lower() == 'n' or  len(list_of_meals_with_their_ingredients) == 0:
-                break
-            elif user_input.lower() == 'y':
-                ingredient_name = input("Ingredient nr: " + str(index + 1) + " : ")
-                list_of_meals_with_their_ingredients = filter_by_ingredient(list_of_meals_with_their_ingredients,
-                                                                            ingredient_name.lower())
-                index += 1
+            if len(list_of_meals_with_their_ingredients) != 0:
+                user_input = input("We have found " + str(
+                    len(list_of_meals_with_their_ingredients)) + " meals. Would you like to narrow your search? (y/n)")
+                if user_input.lower() == 'n':
+                    break
+                elif user_input.lower() == 'y':
+                    ingredient_name = input("Ingredient nr: " + str(index + 1) + " : ")
+                    list_of_meals_with_their_ingredients = filter_by_ingredient(list_of_meals_with_their_ingredients,
+                                                                                ingredient_name.lower())
+                    index += 1
+                else:
+                    print("Unknown option was selected")
             else:
-                print("Unknown option was selected")
+                print("There is no recipe matching your criteria :( Try Again")
+                break
 
         recipe = display_meals(list_of_meals_with_their_ingredients)
-
-        download_choice = input('Would you like to save the results into a txt file? (y/n): ')
-        if download_choice.strip().lower() == 'y':
-             with open('themealdb.txt', 'w+', encoding='utf-8') as text_file:
-                 for line in recipe:
-                     text_file.write(f'{line}\n')
-             print("Results saved to 'themealdb.txt'.")
-        else:
-             print('You chose not to download and save the recipes.')
-
+        if len(list_of_meals_with_their_ingredients) != 0: download_file(recipe)
 
 def random_meal():
     random_meal_url = f"{meal_db_api_base_url}random.php"
