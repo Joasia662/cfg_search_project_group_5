@@ -59,6 +59,7 @@ def display_meals(local_list_of_meals_with_their_ingredients):
     for meal in local_list_of_meals_with_their_ingredients:
         meal_detail = get_meal_details(meal["meal_id"])
         local_recipe.append(meal_detail["strMeal"])
+        print(meal_detail["strMeal"])
 
         for key, value in meal_detail.items():  # For all the key value pairs in a meal
             if key.startswith("strIngredient") and value:  # Find those where the key starts with strIngredient and
@@ -111,7 +112,7 @@ def search_ingredient():
         while True:
             if len(list_of_meals_with_their_ingredients) != 0:
                 user_input = input("We have found " + str(
-                    len(list_of_meals_with_their_ingredients)) + " meals. Would you like to narrow your search? (y/n)")
+                    len(list_of_meals_with_their_ingredients)) + " {meals}. Would you like to narrow your search? (y/n)".format(meals = "meal" if len(list_of_meals_with_their_ingredients) == 1 else "meals"))
                 if user_input.lower() == 'n':
                     break
                 elif user_input.lower() == 'y':
