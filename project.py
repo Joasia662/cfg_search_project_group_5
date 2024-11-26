@@ -1,5 +1,6 @@
 import requests  # Import requests library
 from pprint import pprint  # Import pretty print
+from result import search_ingredient_vegan_nonvegan
 
 # Store themealdb base URL in a new variable
 meal_db_api_base_url = 'https://www.themealdb.com/api/json/v1/1/'  
@@ -145,8 +146,9 @@ def menu():
         print("1. Search for a meal by name")
         print("2. Get a random meal")
         print("3. Search meals by ingredient")
-        print("4. Exit")
-        choice = input("Please enter your choice (1-4): ").strip()
+        print("4. Search vegan/non-vegan meals by ingredient")
+        print("5. Exit")
+        choice = input("Please enter your choice (1-5): ").strip()
 
         if choice == "1":
             search_meal_by_name()
@@ -155,9 +157,11 @@ def menu():
         elif choice == "3":
             search_ingredient()
         elif choice == "4":
+            search_ingredient_vegan_nonvegan()
+        elif choice == "5":
             print(f"Goodbye, {user_name}! Happy cooking!")
             break
         else:
-            print("Invalid choice. Please enter a number between 1 and 4.")
+            print("Invalid choice. Please enter a number between 1 and 5.")
 menu()
 
