@@ -3,7 +3,7 @@ from pprint import pprint  # Import pretty print
 from result import search_ingredient_vegan_nonvegan
 
 # Store themealdb base URL in a new variable
-meal_db_api_base_url = 'https://www.themealdb.com/api/json/v1/1/'  
+meal_db_api_base_url = 'https://www.themealdb.com/api/json/v1/1/'
 
 # Welcome message
 user_name = input('Hi! Welcome to the Meal Planner. Please, tell us your name :) ')
@@ -31,12 +31,14 @@ def get_meal_details(meal_id):
     data = response.json()
     return data['meals'][0] if data['meals'] else {}
 
+
 def separate_ingredients_and_id_from_meal(my_local_meal):
     item = {
         "meal_id": my_local_meal['idMeal'],
         "ingredients": format_ingredients(my_local_meal)
     }
     return item
+
 
 def format_ingredients(my_local_meal):
     local_iterator = 1
@@ -51,9 +53,11 @@ def format_ingredients(my_local_meal):
             break
     return ingredient_list
 
+
 def filter_by_ingredient(my_local_meal_list, my_local_ingredient):
     new_array = [meal for meal in my_local_meal_list if my_local_ingredient in meal["ingredients"]]
     return new_array
+
 
 def display_meals(local_list_of_meals_with_their_ingredients):
     local_recipe = []
@@ -78,6 +82,7 @@ def display_meals(local_list_of_meals_with_their_ingredients):
 
     return local_recipe
 
+
 def download_file(local_recipe):
     download_choice = input('Would you like to save the results into a txt file? (y/n): ')
     if download_choice.strip().lower() == 'y':
@@ -87,6 +92,7 @@ def download_file(local_recipe):
         print("Results saved to 'themealdb.txt'.")
     else:
         print('You chose not to download and save the recipes.')
+
 
 def search_ingredient():
     index = 0
@@ -113,7 +119,8 @@ def search_ingredient():
         while True:
             if len(list_of_meals_with_their_ingredients) != 0:
                 user_input = input("We have found " + str(
-                    len(list_of_meals_with_their_ingredients)) + " {meals}. Would you like to narrow your search? (y/n)".format(meals = "meal" if len(list_of_meals_with_their_ingredients) == 1 else "meals"))
+                    len(list_of_meals_with_their_ingredients)) + " {meals}. Would you like to narrow your search? (y/n)".format(
+                    meals="meal" if len(list_of_meals_with_their_ingredients) == 1 else "meals"))
                 if user_input.lower() == 'n':
                     break
                 elif user_input.lower() == 'y':
@@ -129,6 +136,7 @@ def search_ingredient():
 
         recipe = display_meals(list_of_meals_with_their_ingredients)
         if len(list_of_meals_with_their_ingredients) != 0: download_file(recipe)
+
 
 def random_meal():
     random_meal_url = f"{meal_db_api_base_url}random.php"
@@ -163,5 +171,6 @@ def menu():
             break
         else:
             print("Invalid choice. Please enter a number between 1 and 5.")
-menu()
 
+
+menu()
